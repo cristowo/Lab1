@@ -1,4 +1,6 @@
 #lang racket
+;;;;;;;;;;;;;TDA Generacion de Cartas;;;;;;;;;;;;;;;;;;;
+
 ;se usa para generar las n primeras cartas
 (define (C1 n i)
   (cond
@@ -25,13 +27,31 @@
     [else null]))
 (define (C6 n i j k)
   (cond
-    [(<= i n)(cons(C5 n i j k)(C6 n (+ i 1) j k))]
+    [(<= i n)(append(C5 n i j k)(C6 n (+ i 1) j k))]
     [else null]))
+
+;;;;;;;;;;;;;     TDA cardSet     ;;;;;;;;;;;;;;;;;;;
 
 ;main principal para la función
 (define Cards(lambda(n)
-          (cons(cons(C1 n 1)(C3 (- n 1) 1 1))(C6 (- n 1) 1 1 1))))
+          (append(cons(C1 n 1)(C3 (- n 1) 1 1))(C6 (- n 1) 1 1 1))))
 
+(define cardSet2 (lambda(L Num Max)   ;suponiendo que se basara meramente en numeros L = null
+                 (cond
+                   [(> Max 0)(cons(car L)(cardSet2 (cdr L) Num (- Max 1)))]
+                   [(< Max 0) (Cards Num)]
+                   [else null])))
 
+(define cardSet (lambda(L Num Max)
+                  (define L1 (Cards Num))
+                  (cardSet2 L1 Num Max)))
 
+;;;;;;;;;;;;;     TDA numCards     ;;;;;;;;;;;;;;;;;;;
+(define (loop L i)
+  (cond
+    [(empty? L) i]
+    [else (loop (rest L)(+ i 1))]))
 
+(define (numCards L)
+  (define i 0)
+  (loop L i))
