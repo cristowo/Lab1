@@ -30,7 +30,7 @@
     [(<= i n)(append(C5 n i j k)(C6 n (+ i 1) j k))]
     [else null]))
 
-;;;;;;;;;;;;;     TDA cardSet     ;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;; TDA cardSet - constructor ;;;;;;;;;;;;;;;;;;;
 
 ;main principal para la función
 (define Cards(lambda(n)
@@ -46,12 +46,30 @@
                   (define L1 (Cards Num))
                   (cardSet2 L1 Num Max)))
 
-;;;;;;;;;;;;;     TDA numCards     ;;;;;;;;;;;;;;;;;;;
-(define (loop L i)
+;;;;;;;;;;;;; TDA cardsSet - numCards ;;;;;;;;;;;;;;;;;;;
+(define (loopNc L i)
   (cond
     [(empty? L) i]
-    [else (loop (rest L)(+ i 1))]))
+    [else (loopNc (rest L)(+ i 1))]))
 
 (define (numCards L)
   (define i 0)
-  (loop L i))
+  (loopNc L i))
+
+;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;
+(define (loopNth L j i)
+  (cond
+    [(empty? L) null]                      ;Caso lista vacia o fuera del alcance
+    [(= (- j 1) i) (car L)]                ;Devuelve la carta solicitada
+    [else (loopNth (rest L) j (+ i 1))]))  ;Cumple el loop sumando 1 a i
+
+(define (nthCard L j)                      ;Funcion principal nthCard
+  (define i 0)                             ;Definimos un i auxiliar
+  (loopNth L j i))                         ;Envia los datos al loop
+
+
+
+
+
+
+

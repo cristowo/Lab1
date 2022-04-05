@@ -1,0 +1,76 @@
+#lang racket
+;;;;;;;;;;;;;TDA Generacion de Cartas;;;;;;;;;;;;;;;;;;;
+
+;se usa para generar las n primeras cartas
+(define (C1 n i)
+  (cond
+    [(<= i n) (cons i (C1 n (+ i 1)))]
+    [else null]))
+;se usa para generar por filas de tamaño n,numeros consecutivos 
+(define (C2 n j k)
+  (cond
+    [(<= k n) (cons (+(* n j)(+ k 1))(C2 n j (+ k 1)))]
+    [else null]))
+
+(define (C3 n j k)
+  (cond
+    [(<= j n)(cons (cons 1 (C2 n j k))(C3 n (+ j 1) k))]
+    [else null]))
+;se usa para generar numeros consecutivos por columnas de tamaño n
+(define (C4 n i j k)
+  (cond
+    [(<= k n)(cons (+(+ (+ (modulo(-(+(*(- i 1)(- k 1))j)1)n) (* n(- k 1))) 2) n) (C4 n i j (+ k 1)))]
+    [else null]))
+(define (C5 n i j k)
+  (cond
+    [(<= j n)(cons(cons (+ i 1)(C4 n i j k))(C5 n i (+ j 1) k))]
+    [else null]))
+(define (C6 n i j k)
+  (cond
+    [(<= i n)(append(C5 n i j k)(C6 n (+ i 1) j k))]
+    [else null]))
+
+;;;;;;;;;;;;; TDA cardsSet - constructor ;;;;;;;;;;;;;;;;;;;
+
+;main principal para la función
+(define Cards(lambda(n)
+          (append(cons(C1 n 1)(C3 (- n 1) 1 1))(C6 (- n 1) 1 1 1))))
+
+(define cardSet2 (lambda(L Num Max)   ;suponiendo que se basara meramente en numeros L = null
+                 (cond
+                   [(> Max 0)(cons(car L)(cardSet2 (cdr L) Num (- Max 1)))]
+                   [(< Max 0) (Cards Num)]
+                   [else null])))
+
+(define cardsSet (lambda(L Num Max)
+                  (define L1 (Cards Num))
+                  (cardSet2 L1 Num Max)))
+
+;;;;;;;;;;;;; TDA cardsSet - numCards ;;;;;;;;;;;;;;;;;;;
+(define (loopNc L i)
+  (cond
+    [(empty? L) i]
+    [else (loopNc (rest L)(+ i 1))]))
+
+(define (numCards L)
+  (define i 0)
+  (loopNc L i))
+
+;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;
+(define (loopNth L j i)
+  (cond
+    [(empty? L) null]                      ;Caso lista vacia o fuera del alcance
+    [(= (- j 1) i) (car L)]                ;Devuelve la carta solicitada
+    [else (loopNth (rest L) j (+ i 1))]))  ;Cumple el loop sumando 1 a i
+
+(define (nthCard L j)                      ;Funcion principal nthCard
+  (define i 0)                             ;Definimos un i auxiliar
+  (loopNth L j i))                         ;Envia los datos al loop
+
+;;;;;;;;;;;;;;; TDA cardsSet - findTotalCards ;;;;;;;;;;;;;;;;;;;;
+(define (findTotalCards L)
+  (define n (numCards L))
+  (+(*(- n 1)(- n 1)) n))
+
+
+
