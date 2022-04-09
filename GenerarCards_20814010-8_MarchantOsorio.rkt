@@ -50,20 +50,20 @@
 (define (loopNc L i)
   (cond
     [(empty? L) i]
-    [else (loopNc (rest L)(+ i 1))]))
+    [else (loopNc (cdr L)(+ i 1))]))
 
 (define (numCards L)
   (define i 0)
   (loopNc L i))
 
-;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;    (nthCard (cardsSet null 8 -1) 1)
 (define (loopNth L j i)
   (cond
     [(empty? L) null]                      ;Caso lista vacia o fuera del alcance
     [(= (- j 1) i) (car L)]                ;Devuelve la carta solicitada
     [else (loopNth (rest L) j (+ i 1))]))  ;Cumple el loop sumando 1 a i
 
-(define (nthCard L j)                      ;Funcion principal nthCard
+(define (nthCard L j)                      ;Funcion principal nthCard, L es lista; j el numero
   (define i 0)                             ;Definimos un i auxiliar
   (loopNth L j i))                         ;Envia los datos al loop
 
@@ -71,6 +71,55 @@
 (define (findTotalCards L)
   (define n (numCards L))
   (+(*(- n 1)(- n 1)) n))
+
+;;;;;;;;;;;;;;; TDA cardsSet - Dobble? ;;;;;;;;;;;;;;;;;;;;
+(define (buscar L1 L2 L12 acum) ;ej: (buscar (list 1 2 3 3 5 3 6) (list 1 2 3 4 5 6) (list 1 2 3 3 5 3 6) 0)
+  (cond
+    [(empty? L1) (buscar L12 (cdr L2) L12 acum)]
+    [(empty? L2) acum]
+    [(equal? (car L1) (car L2)) (buscar(cdr L1) L2 L12 (+ acum 1))]
+    [else (buscar(cdr L1) L2 L12 acum)]))
+
+(define (buscar3 L1 L2)
+  (cond
+    [(empty? L2) #true]
+    [(= (buscar (car L1) (car L2) (car L1) 0) 1) (buscar3 L1 (cdr L2))]
+    [else #false]))
+
+(define (Dobble? L)
+  (cond
+    [(empty? L) #true]
+    [(equal? (buscar3  L (cdr L)) #true) (Dobble? (cdr L))]
+    [else (buscar3 (cdr L) (cdr(cdr L)))]))
+
+    
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
