@@ -73,6 +73,11 @@
   (+(*(- n 1)(- n 1)) n))
 
 ;;;;;;;;;;;;;;; TDA cardsSet - Dobble? ;;;;;;;;;;;;;;;;;;;;
+;Funcion buscar
+;Dominio: Listas y un entero
+;Recorrido: Entero
+;Descripcion entrega el numero de elementos repetidos que hay entre ambas listas.
+;Tipo: Cola
 (define (buscar L1 L2 L12 acum) ;ej: (buscar (list 1 2 3 3 5 3 6) (list 1 2 3 4 5 6) (list 1 2 3 3 5 3 6) 0)
   (cond
     [(empty? L1) (buscar L12 (cdr L2) L12 acum)]
@@ -80,22 +85,54 @@
     [(equal? (car L1) (car L2)) (buscar(cdr L1) L2 L12 (+ acum 1))]
     [else (buscar(cdr L1) L2 L12 acum)]))
 
-(define (buscar3 L1 L2)
+;Funcion buscar3
+;Dominio: Listas
+;Recorrido: Booleano
+;Descripcion recorre ambas listas y las envia a buscar. Solo 1 elemento en comun 
+;Tipo: 
+(define (buscar3 L1 L2 L22)
   (cond
-    [(empty? L2) #true]
-    [(= (buscar (car L1) (car L2) (car L1) 0) 1) (buscar3 L1 (cdr L2))]
+    [(empty? (cdr L1)) #true]
+    [(empty? (cdr L2)) (buscar3 (cdr L1) (cdr L22) (cdr L22))]
+    [(= (buscar (car L1) (car(cdr L2)) (car L1) 0) 1) (buscar3 L1 (cdr L2) L22)]
     [else #false]))
 
+;Funcion buscar2
+;Dominio: Listas
+;Recorrido: Booleano
+;Descripcion: no elentos repetido en una misma carta.
+;Tipo: 
+(define (buscar2 L1 L2)
+  (cond
+    [(empty? L1) #true]
+    [(= (buscar (car L1) (car L2) (car L1) 0) (numCards (car L1))) (buscar2 (cdr L1) (cdr L2))]
+    [else #false]))
+
+;Funcion buscar3
+;Dominio: Listas
+;Recorrido: Booleano
+;Descripcion: misma cantidad de elementos.
+;Tipo:
+
+(define (buscar4 L)
+  (cond
+    [(empty? (cdr L)) #true]
+    [(= (numCards (car L)) (numCards (car(cdr L)))) (buscar4 (cdr L))]
+    [else #false]))
+
+;Funcion Dobble?
+;Dominio: Listas
+;Recorrido: Booleano
+;Descripcion: 
+;Tipo:
 (define (Dobble? L)
   (cond
-    [(empty? L) #true]
-    [(equal? (buscar3  L (cdr L)) #true) (Dobble? (cdr L))]
-    [else (buscar3 (cdr L) (cdr(cdr L)))]))
-
-    
-
-
-    
+    [(buscar4 L)(cond
+                  [(buscar2 L L) (cond
+                                   [(buscar3 L L L) #true]
+                                   [else #false])]
+                  [else #false])]
+    [else #false]))
 
 
 

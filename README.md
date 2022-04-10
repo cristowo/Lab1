@@ -5,12 +5,21 @@ Espacio de trabajo para la realizacion del laboratorio 1 de paradigmas de progra
 
 
 a continuación los objetivos a realizar y su estado hasta el momento
+
 ###  TDA cardsSet
+
 constructor			|👍
-dobble?				|
+
+dobble?				|👍
+
 numCards			|👍
-nthCard				|
+
+nthCard				|👍
+
 findTotalCards		|👍
+
 requiredElements	|
+
 missingCards		|
+
 cardsSet->string	|
