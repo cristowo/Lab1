@@ -1,5 +1,5 @@
 #lang racket
-;;;;;;;;;;;;;TDA Generacion de Cartas;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;TDA Generacion de Cartas;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;se usa para generar las n primeras cartas
 (define (C1 n i)
@@ -30,7 +30,7 @@
     [(<= i n)(append(C5 n i j k)(C6 n (+ i 1) j k))]
     [else null]))
 
-;;;;;;;;;;;;; TDA cardsSet - constructor ;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;; TDA cardsSet - constructor ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;main principal para la función
 (define Cards(lambda(n)
@@ -42,11 +42,33 @@
                    [(< Max 0) (Cards Num)]
                    [else null])))
 
-(define cardsSet (lambda(L Num Max)
+;;;;;;;;;;;;;;;;       Simbologia        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define (recorrer Ls n acum)
+  (cond
+    [(empty? Ls) n] ;se puede poner null para que no exista el numero o se puede poner n para que este el numero.
+    [( = acum (- n 1)) (car Ls)]
+    [else (recorrer (cdr Ls) n (+ acum 1))]))
+       
+(define (igualar Ls Lc)
+  (cond
+    [(empty? Lc) null]
+    [else (cons (recorrer Ls (car Lc) 0) (igualar Ls (cdr Lc)))]))
+
+(define (Symbo Ls Lc)
+  (cond
+    [(empty? Lc) null]
+    [else (cons(igualar Ls (car Lc))(Symbo Ls (cdr Lc)))]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define cardsSet3 (lambda(L Num Max)
                   (define L1 (Cards Num))
                   (cardSet2 L1 Num Max)))
 
-;;;;;;;;;;;;; TDA cardsSet - numCards ;;;;;;;;;;;;;;;;;;;
+(define cardsSet (lambda(L Num Max)
+                   (cond
+                     [(empty? L) (cardsSet3 L Num Max)]                ;(cardsSet null 3 -1)
+                     [else (Symbo L (cardsSet3 L Num Max))])))         ;(cardsSet (list "a" "b" "c" "d" "e" "f" "g") 3 -1)
+;;;;;;;;;;;;; TDA cardsSet - numCards ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (loopNc L i)
   (cond
     [(empty? L) i]
@@ -56,7 +78,7 @@
   (define i 0)
   (loopNc L i))
 
-;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;    (nthCard (cardsSet null 8 -1) 1)
+;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (loopNth L j i)
   (cond
     [(empty? L) null]                      ;Caso lista vacia o fuera del alcance
@@ -67,12 +89,12 @@
   (define i 0)                             ;Definimos un i auxiliar
   (loopNth L j i))                         ;Envia los datos al loop
 
-;;;;;;;;;;;;;;; TDA cardsSet - findTotalCards ;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; TDA cardsSet - findTotalCards ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (findTotalCards L)
   (define n (numCards L))
   (+(*(- n 1)(- n 1)) n))
 
-;;;;;;;;;;;;;;; TDA cardsSet - Dobble? ;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; TDA cardsSet - Dobble? ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Funcion buscar
 ;Dominio: Listas y un entero
 ;Recorrido: Entero
@@ -135,17 +157,7 @@
     [else #false]))
 
 
-
-
-
-
-
-
-
-
-
-
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
