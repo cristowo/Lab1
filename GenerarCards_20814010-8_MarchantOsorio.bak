@@ -1,5 +1,5 @@
 #lang racket
-;;;;;;;;;;;;;TDA Generacion de Cartas;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;TDA Generacion de Cartas;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;se usa para generar las n primeras cartas
 (define (C1 n i)
@@ -30,7 +30,7 @@
     [(<= i n)(append(C5 n i j k)(C6 n (+ i 1) j k))]
     [else null]))
 
-;;;;;;;;;;;;; TDA cardSet - constructor ;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;; TDA cardsSet - constructor ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;main principal para la función
 (define Cards(lambda(n)
@@ -42,30 +42,129 @@
                    [(< Max 0) (Cards Num)]
                    [else null])))
 
-(define cardSet (lambda(L Num Max)
+;;;;;;;;;;;;;;;;       Simbologia        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define (recorrer Ls n acum)
+  (cond
+    [(empty? Ls) n] ;se puede poner null para que no exista el numero o se puede poner n para que este el numero.
+    [( = acum (- n 1)) (car Ls)]
+    [else (recorrer (cdr Ls) n (+ acum 1))]))
+       
+(define (igualar Ls Lc)
+  (cond
+    [(empty? Lc) null]
+    [else (cons (recorrer Ls (car Lc) 0) (igualar Ls (cdr Lc)))]))
+
+(define (Symbo Ls Lc)
+  (cond
+    [(empty? Lc) null]
+    [else (cons(igualar Ls (car Lc))(Symbo Ls (cdr Lc)))]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define cardsSet3 (lambda(L Num Max)
                   (define L1 (Cards Num))
                   (cardSet2 L1 Num Max)))
 
-;;;;;;;;;;;;; TDA cardsSet - numCards ;;;;;;;;;;;;;;;;;;;
+(define cardsSet (lambda(L Num Max)
+                   (cond
+                     [(empty? L) (cardsSet3 L Num Max)]                ;(cardsSet null 3 -1)
+                     [else (Symbo L (cardsSet3 L Num Max))])))         ;(cardsSet (list "a" "b" "c" "d" "e" "f" "g") 3 -1)
+;;;;;;;;;;;;; TDA cardsSet - numCards ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (loopNc L i)
   (cond
     [(empty? L) i]
-    [else (loopNc (rest L)(+ i 1))]))
+    [else (loopNc (cdr L)(+ i 1))]))
 
 (define (numCards L)
   (define i 0)
   (loopNc L i))
 
-;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (loopNth L j i)
   (cond
     [(empty? L) null]                      ;Caso lista vacia o fuera del alcance
     [(= (- j 1) i) (car L)]                ;Devuelve la carta solicitada
     [else (loopNth (rest L) j (+ i 1))]))  ;Cumple el loop sumando 1 a i
 
-(define (nthCard L j)                      ;Funcion principal nthCard
+(define (nthCard L j)                      ;Funcion principal nthCard, L es lista; j el numero
   (define i 0)                             ;Definimos un i auxiliar
   (loopNth L j i))                         ;Envia los datos al loop
+
+;;;;;;;;;;;;;;; TDA cardsSet - findTotalCards ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define (findTotalCards L)
+  (define n (numCards L))
+  (+(*(- n 1)(- n 1)) n))
+
+;;;;;;;;;;;;;;; TDA cardsSet - Dobble? ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Funcion buscar
+;Dominio: Listas y un entero
+;Recorrido: Entero
+;Descripcion entrega el numero de elementos repetidos que hay entre ambas listas.
+;Tipo: Cola
+(define (buscar L1 L2 L12 acum) ;ej: (buscar (list 1 2 3 3 5 3 6) (list 1 2 3 4 5 6) (list 1 2 3 3 5 3 6) 0)
+  (cond
+    [(empty? L1) (buscar L12 (cdr L2) L12 acum)]
+    [(empty? L2) acum]
+    [(equal? (car L1) (car L2)) (buscar(cdr L1) L2 L12 (+ acum 1))]
+    [else (buscar(cdr L1) L2 L12 acum)]))
+
+;Funcion buscar3
+;Dominio: Listas
+;Recorrido: Booleano
+;Descripcion recorre ambas listas y las envia a buscar. Solo 1 elemento en comun 
+;Tipo: 
+(define (buscar3 L1 L2 L22)
+  (cond
+    [(empty? (cdr L1)) #true]
+    [(empty? (cdr L2)) (buscar3 (cdr L1) (cdr L22) (cdr L22))]
+    [(= (buscar (car L1) (car(cdr L2)) (car L1) 0) 1) (buscar3 L1 (cdr L2) L22)]
+    [else #false]))
+
+;Funcion buscar2
+;Dominio: Listas
+;Recorrido: Booleano
+;Descripcion: no elentos repetido en una misma carta.
+;Tipo: 
+(define (buscar2 L1 L2)
+  (cond
+    [(empty? L1) #true]
+    [(= (buscar (car L1) (car L2) (car L1) 0) (numCards (car L1))) (buscar2 (cdr L1) (cdr L2))]
+    [else #false]))
+
+;Funcion buscar3
+;Dominio: Listas
+;Recorrido: Booleano
+;Descripcion: misma cantidad de elementos.
+;Tipo:
+
+(define (buscar4 L)
+  (cond
+    [(empty? (cdr L)) #true]
+    [(= (numCards (car L)) (numCards (car(cdr L)))) (buscar4 (cdr L))]
+    [else #false]))
+
+;Funcion Dobble?
+;Dominio: Listas
+;Recorrido: Booleano
+;Descripcion: 
+;Tipo:
+(define (Dobble? L)
+  (cond
+    [(buscar4 L)(cond
+                  [(buscar2 L L) (cond
+                                   [(buscar3 L L L) #true]
+                                   [else #false])]
+                  [else #false])]
+    [else #false]))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
+
 
 
 
