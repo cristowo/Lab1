@@ -69,14 +69,14 @@
                      [(empty? L) (cardsSet3 L Num Max)]                ;(cardsSet null 3 -1)
                      [else (Symbo L (cardsSet3 L Num Max))])))         ;(cardsSet (list "a" "b" "c" "d" "e" "f" "g") 3 -1)
 ;;;;;;;;;;;;; TDA cardsSet - numCards ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;preferi generar mi popio length
 (define (loopNc L i)
   (cond
     [(empty? L) i]
     [else (loopNc (cdr L)(+ i 1))]))
 
 (define (numCards L)
-  (define i 0)
-  (loopNc L i))
+  (loopNc L 0))
 
 ;;;;;;;;;;;;;;; TDA cardsSet - nthCard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (loopNth L j i)
@@ -86,13 +86,11 @@
     [else (loopNth (rest L) j (+ i 1))]))  ;Cumple el loop sumando 1 a i
 
 (define (nthCard L j)                      ;Funcion principal nthCard, L es lista; j el numero
-  (define i 0)                             ;Definimos un i auxiliar
-  (loopNth L j i))                         ;Envia los datos al loop
+  (loopNth L j 0))                         ;Envia los datos al loop
 
 ;;;;;;;;;;;;;;; TDA cardsSet - findTotalCards ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (findTotalCards L)
-  (define n (numCards L))
-  (+(*(- n 1)(- n 1)) n))
+  (+(*(- (length(nthCard L 1))1)(- (length(nthCard L 1))1))(length(nthCard L 1))))
 
 ;;;;;;;;;;;;;;; TDA cardsSet - Dobble? ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Funcion buscar
@@ -110,7 +108,7 @@
 ;Funcion buscar3
 ;Dominio: Listas
 ;Recorrido: Booleano
-;Descripcion recorre ambas listas y las envia a buscar. Solo 1 elemento en comun 
+;Descripcion recorre ambas listas y las envia a buscar. Solo 1 elemento en comun, de esta forma ve que el n-1 sea primo o un numero elevado a un primo.
 ;Tipo: 
 (define (buscar3 L1 L2 L22)
   (cond
@@ -118,6 +116,7 @@
     [(empty? (cdr L2)) (buscar3 (cdr L1) (cdr L22) (cdr L22))]
     [(= (buscar (car L1) (car(cdr L2)) (car L1) 0) 1) (buscar3 L1 (cdr L2) L22)]
     [else #false]))
+
 
 ;Funcion buscar2
 ;Dominio: Listas
@@ -127,7 +126,7 @@
 (define (buscar2 L1 L2)
   (cond
     [(empty? L1) #true]
-    [(= (buscar (car L1) (car L2) (car L1) 0) (numCards (car L1))) (buscar2 (cdr L1) (cdr L2))]
+    [(= (buscar (car L1) (car L2) (car L1) 0) (length (car L1))) (buscar2 (cdr L1) (cdr L2))]
     [else #false]))
 
 ;Funcion buscar3
@@ -139,7 +138,7 @@
 (define (buscar4 L)
   (cond
     [(empty? (cdr L)) #true]
-    [(= (numCards (car L)) (numCards (car(cdr L)))) (buscar4 (cdr L))]
+    [(= (length (car L)) (length (car(cdr L)))) (buscar4 (cdr L))]
     [else #false]))
 
 ;Funcion Dobble?
@@ -158,13 +157,20 @@
 
 
 ;;;;;;;;;; TDA cardsSet - requiredElements  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (define (requiredElements L)
-  L)
+  (findTotalCards L))
 
 
+;;;;;;;;;; TDA cardsSet - missingCards  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;(numCards L)
+(define (RecoMiss L1 L2 L22)
+  (cond
+    [(empty? L1) null]                                              ;cuando la lista se acaba 
+    [(empty? L2) (cons (car L1) (RecoMiss (cdr L1) L22 L22))]       ;cuando el elemento se encontro se agrega a lista
+    [(equal? (car L1)(car L2))(RecoMiss (cdr L1) L22 L22)]          ;cuando el elemento si esta en la lista se descarta y sigue
+    [else (RecoMiss L1 (cdr L2) L22)]))                             ;caso de avance al siguiente elemento de la lista
 
-
+(define (missingCards L)
+  (RecoMiss (cardsSet null (sqrt(-(findTotalCards L)1)) -1) L L))
 
 
 
