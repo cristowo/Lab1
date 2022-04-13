@@ -18,8 +18,10 @@ nthCard				|👍
 
 findTotalCards		|👍
 
-requiredElements	|
+requiredElements	|👍
 
-missingCards		|
+missingCards		|👍
 
-cardsSet->string	|
+cardsSet->string	|👍
+
+TDA Cartas terminado, falta distribuir en documentos distintos

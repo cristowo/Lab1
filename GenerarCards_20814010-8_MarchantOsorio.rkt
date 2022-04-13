@@ -1,6 +1,10 @@
 #lang racket
 ;;;;;;;;;;;;;TDA Generacion de Cartas;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(define ListS(list "A " "B " "C " "D " "E " "F " "G " "H " "I " "J " "K " "L " "M " "N " "Ñ " "O " "P " "Q " "R " "S " "T " "U " "V " "W " "X " "Y " "Z "
+                   "aA " "bB " "cC " "dD " "eE " "fF " "gG " "hH " "iI " "jJ " "kK " "lL " "mM " "nN " "ñÑ " "oO " "pP " "qQ " "rR " "sS " "tT " "uU " "vV " "wW " "xX " "yY " "zZ "
+                   "aAa " "bBb " "cCc "))
+(define ListN(list "1 " "2 " "3 " "4 " "5 " "6 " "7 " "8 " "9 " "10 " "11 " "12 " "13 " "14 " "15 " "16 " "17 " "18 " "19 " "20 " "21 " "22 " "23 " "24 " "25 " "26 " "27 " "28 " "29 " "30 "
+                   "31 " "32 " "33 " "34 " "35 " "36 " "37 " "38 " "39 " "40 " "41 " "42 " "43 " "44 " "45 " "46 " "47 " "48 " "49 " "50 " "51 " "52 " "53 " "54 " "55 " "56 " "57 "))
 ;se usa para generar las n primeras cartas
 (define (C1 n i)
   (cond
@@ -90,7 +94,7 @@
 
 ;;;;;;;;;;;;;;; TDA cardsSet - findTotalCards ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (findTotalCards L)
-  (+(*(- (length(nthCard L 1))1)(- (length(nthCard L 1))1))(length(nthCard L 1))))
+  (+(*(- (length L )1)(- (length L)1))(length L)))  
 
 ;;;;;;;;;;;;;;; TDA cardsSet - Dobble? ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Funcion buscar
@@ -170,7 +174,23 @@
     [else (RecoMiss L1 (cdr L2) L22)]))                             ;caso de avance al siguiente elemento de la lista
 
 (define (missingCards L)
-  (RecoMiss (cardsSet null (sqrt(-(findTotalCards L)1)) -1) L L))
+  (cond
+    [(>= (buscar (car(cardsSet ListN (numCards (car L)) -1)) (car L) (car(cardsSet ListN (numCards (car L)) -1)) 0) 1) (RecoMiss(cardsSet ListN (numCards (car L)) -1) L L)]
+    [else (RecoMiss(cardsSet ListS (numCards (car L)) -1) L L)]))
+
+;;;;;;;;;; TDA cardsSet - CardsSet->String  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define (CardsSet->String2 L)
+  (cond
+    [(empty? L) null]
+    [else (cons (apply string-append (car L))(CardsSet->String2 (cdr L)))]))
+
+(define (putNCard L)
+  (cond
+    [(empty? L) null]
+    [else (cons(list "/Card: " (car L)) (putNCard (cdr L)))]))
+
+(define (CardsSet->String L)
+  (apply string-append(CardsSet->String2 (putNCard (CardsSet->String2 L)))))
 
 
 
