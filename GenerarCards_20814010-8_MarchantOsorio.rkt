@@ -184,13 +184,13 @@
     [(empty? L) null]
     [else (cons (apply string-append (car L))(CardsSet->String2 (cdr L)))]))
 
-(define (putNCard L)
+(define (putNCard L i)
   (cond
     [(empty? L) null]
-    [else (cons(list "/Card: " (car L)) (putNCard (cdr L)))]))
+    [else (cons(append (list "Card " (number->string  i) ": " (car L)) (list "\n")) (putNCard (cdr L) (+ i 1)))]))
 
 (define (CardsSet->String L)
-  (apply string-append(CardsSet->String2 (putNCard (CardsSet->String2 L)))))
+  (apply string-append(CardsSet->String2 (putNCard (CardsSet->String2 L) 1))))
 
 
 
