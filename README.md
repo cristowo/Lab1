@@ -25,3 +25,28 @@ missingCards		|👍
 cardsSet->string	|👍
 
 TDA Cartas terminado, falta distribuir en documentos distintos
+
+
+### TDA Game
+
+constructor 		|👍
+
+stackMode 			|👍
+
+register 			|👍
+
+whoseTurnIsIt? 		|👍
+
+play				|
+
+status				|
+
+score				|
+
+game->string		|
+	
+addCard				|
+
+empyHandsStackMode	|
+
+myMode 				|

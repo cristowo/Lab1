@@ -1,4 +1,5 @@
 #lang racket
+(provide (all-defined-out))
 ;;;;;;;;;;;;;TDA Generacion de Cartas;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define ListS(list "A " "B " "C " "D " "E " "F " "G " "H " "I " "J " "K " "L " "M " "N " "Ñ " "O " "P " "Q " "R " "S " "T " "U " "V " "W " "X " "Y " "Z "
                    "aA " "bB " "cC " "dD " "eE " "fF " "gG " "hH " "iI " "jJ " "kK " "lL " "mM " "nN " "ñÑ " "oO " "pP " "qQ " "rR " "sS " "tT " "uU " "vV " "wW " "xX " "yY " "zZ "
@@ -68,10 +69,34 @@
                   (define L1 (Cards Num))
                   (cardSet2 L1 Num Max)))
 
-(define cardsSet (lambda(L Num Max)
+(define cardsSet4 (lambda(L Num Max)
                    (cond
                      [(empty? L) (cardsSet3 L Num Max)]                ;(cardsSet null 3 -1)
                      [else (Symbo L (cardsSet3 L Num Max))])))         ;(cardsSet (list "a" "b" "c" "d" "e" "f" "g") 3 -1)
+;;;;;;;;;;;;;;;;;;;;  random ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define (encontrar L n)
+  (cond
+    [(empty? L) null]
+    [(equal? n 1)(car L)]
+    [else (encontrar (cdr L) (- n 1))]))
+
+(define (eleminar L n)
+  (cond
+    [(empty? L) null]
+    [(equal? n 1)(cdr L)]
+    [else (cons (car L) (eleminar (cdr L) (- n 1)))]))
+
+(define (randomFn L NR)
+  (cond
+    [(equal? (length L) 1) (cons (car L) null)]
+    [else (cons (encontrar L NR) (randomFn (eleminar L NR) (random 1 (+(length (eleminar L NR))1))))]))
+;
+(define (cardsSet L N max FRandom)  ;random = #true / #false
+  (cond
+    [(equal? FRandom #true) (randomFn (cardsSet4 L N max) (random 1 (+ (length (cardsSet4 L N max))1)))]
+    [else (cardsSet4 L N max)]))
+  
+;
 ;;;;;;;;;;;;; TDA cardsSet - numCards ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;preferi generar mi popio length
 (define (loopNc L i)
@@ -191,7 +216,6 @@
 
 (define (CardsSet->String L)
   (apply string-append(CardsSet->String2 (putNCard (CardsSet->String2 L) 1))))
-
 
 
 
