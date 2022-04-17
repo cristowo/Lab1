@@ -1,52 +1,53 @@
 # Laboratorio 1 "Dobble game"
 ## Paradigmas de progamación.
+* **Autor:** Cristóbal Marchant Osorio
+* **Fecha de Entrega:** 18 de Abril de 2021
 
-Espacio de trabajo para la realizacion del laboratorio 1 de paradigmas de programacion 😎👍
+
+Espacio de trabajo para la realizacion del laboratorio 1 de paradigmas de programacion 
 
 
 a continuación los objetivos a realizar y su estado hasta el momento
 
-###  TDA cardsSet
+###  TDA cardsSet |☑
 
-constructor			|👍
+constructor			|☑
 
-dobble?				|👍
+dobble?				|☑
 
-numCards			|👍
+numCards			|☑
 
-nthCard				|👍
+nthCard				|☑
 
-findTotalCards		|👍
+findTotalCards		|☑
 
-requiredElements	|👍
+requiredElements	|☑
 
-missingCards		|👍
+missingCards		|☑
 
-cardsSet->string	|👍
+cardsSet->string	|☑
 
-TDA Cartas terminado, falta distribuir en documentos distintos
+addCard				|☑
 
 
-### TDA Game
+### TDA Game | incompleto
 
-constructor 		|👍
+constructor 		|☑
 
-stackMode 			|👍
+stackMode 			|☑
 
-register 			|👍
+register 			|☑
 
-whoseTurnIsIt? 		|👍
+whoseTurnIsIt? 		|☑
 
-play				|👍
+play				|☑
 
-status				|👍
+status				|☑
 
-score				|👍
+score				|☑
 
-game->string		|👎
-	
-addCard				|👍
+game->string		|❌
 
-empyHandsStackMode	|👎
+empyHandsStackMode	|❌
 
-myMode 				|👎
+myMode 				|❌
