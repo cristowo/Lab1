@@ -37,16 +37,16 @@ register 			|👍
 
 whoseTurnIsIt? 		|👍
 
-play				|
+play				|👍
 
-status				|
+status				|👍
 
-score				|
+score				|👍
 
-game->string		|
+game->string		|👎
 	
-addCard				|
+addCard				|👍
 
-empyHandsStackMode	|
+empyHandsStackMode	|👎
 
-myMode 				|
+myMode 				|👎
