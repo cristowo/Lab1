@@ -1,0 +1,9 @@
+El archivo TDA-CardsSet contiente todas las funciones de este TDA.
+
+El archivo TDA-Game contiente todas las funciones de este TDA.
+
+El archivo Main contiene todos los ejemplos de las funciones de ambos TDAs.
+
+Las carpetas tienen todos las funciones por separados.
+
+
