@@ -13,13 +13,13 @@
 ;-------------------------------------constructor---------------------------------------------------------------------------
 (define CARTA1 (cardsSet ListS 4 -1 #false)) ;mazo de 4 elementos 
 (define CARTA2 (cardsSet ListS 4 3 #false))  ;mazo de 4 elementos y 3 cartas
-(define CARTA3 (cardsSet ListS 4 -1 #true))  ;mazo de 4 elementos ordenados al azar
+(define CARTA3 (cardsSet null 4 -1 #true))   ;mazo de 4 elementos ordenados al azar
 (define CARTA4 (cardsSet ListS 4 3 #true))   ;mazo de 4 elementos y 3 cartas ordenadas al azar
 
 ;---------------------------------------Dobble?-----------------------------------------------------------------------------
-(define IsDobble?1 (Dobble?(cardsSet ListS 7 -1 #false)))   ;Dobble? -> mazo de 7 elementos
-(define IsDobble?2 (Dobble?(cardsSet ListS 7 13 #false)))  ;Dobble? -> mazo de 7 elementos y 13 cartas
-(define IsDobble?3 (Dobble?(cardsSet ListS 3 -1 #true)))   ;Dobble? -> mazo de 3 elementos
+(define IsDobble?1 (Dobble?(cardsSet ListS 7 -1 #false)))   ;Dobble? -> mazo de 7 elementos -> es falso
+(define IsDobble?2 (Dobble?(cardsSet ListS 7 13 #false)))   ;Dobble? -> mazo de 7 elementos y 13 cartas -> es true
+(define IsDobble?3 (Dobble?(cardsSet null 3 -1 #true)))     ;Dobble? -> mazo de 3 elementos -> es true
 
 ;--------------------------------TDA cardsSet - numCards -------------------------------------------------------------------
 (define numerocartas1 (numCards CARTA1))                       ;numCards -> mazo usado en cartSet-Constructor
@@ -29,21 +29,21 @@
 ;---------------------------------TDA cardsSet - nthCard -------------------------------------------------------------------
 (define CardNTH1 (nthCard (cardsSet ListS 3 -1 #false) 2))     ;nthCard -> mazo de 3 elementos 
 (define CardNTH2 (nthCard (cardsSet ListS 3 -1 #true) 2))      ;nthCard -> mazo de 3 elementos con orden aleatorio
-(define CardNTH3 (nthCard (cardsSet ListS 3 4 #false) 2))      ;nthCard -> mazo de 3 elementos y max 4 cartas
+(define CardNTH3 (nthCard (cardsSet null 3 4 #false) 2))       ;nthCard -> mazo de 3 elementos y max 4 cartas
 
 ;---------------------------- TDA cardsSet - findTotalCards-----------------------------------------------------------------
 (define cardFTC1 (findTotalCards (nthCard(cardsSet ListS 8 -1 #true) 15))) ;findTotalCards -> carta 15 de un mazo de 8 elementos con roden aleatorio
 (define cardFTC2 (findTotalCards (nthCard(cardsSet ListS 5 -1 #false) 5))) ;findTotalCards -> carta 5 de un mazo de 3 elementos 
-(define cardFTC3 (findTotalCards (nthCard(cardsSet ListS 5 6 #true) 3)))   ;findTotalCards -> carta 3 mazo de 5 elementos y maximo 6 cartas con orden aleatorio
+(define cardFTC3 (findTotalCards (nthCard(cardsSet null 5 6 #true) 3)))    ;findTotalCards -> carta 3 mazo de 5 elementos y maximo 6 cartas con orden aleatorio
 
 ;--------------------------- TDA cardsSet - requiredElements ---------------------------------------------------------------
 (define cardRE1 (requiredElements(nthCard(cardsSet ListS 3 -1 #true) 2)))      ;requiredElements -> carta 2 de un mazo de 3 elementos con orden aleatorio 
 (define cardRE2 (requiredElements(nthCard(cardsSet ListS 4 -1 #false) 5)))     ;requiredElements -> carta 5 de un mazo de 4 elementos
-(define cardRE3 (requiredElements(nthCard(cardsSet ListS 6 6 #true) 1)))       ;requiredElements -> carta 1 de un mazo de 6 elementos con maximo 6 cartas de orden aleatorio
+(define cardRE3 (requiredElements(nthCard(cardsSet null 6 6 #true) 1)))        ;requiredElements -> carta 1 de un mazo de 6 elementos con maximo 6 cartas de orden aleatorio
 
 ;--------------------------- TDA cardsSet - missingCards  ------------------------------------------------------------------
 (define cardRM1 (RecoMiss (cardsSet ListS 3 -1 #t) (cardsSet ListS 3 4 #t) (cardsSet ListS 3 4 #t))) ;RecoMiss -> mazo de 3 elementos con orden alearotio y un mazo de 3 elementos maximo 4 cartas y orden aleatorio
-(define cardMC1 (missingCards (cardsSet ListS 3 4 #t)))                                              ;missingCards -> mazo de 3 elementos, maximo 4 cartas y orden aleatorio 
+(define cardMC1 (missingCards (cardsSet null 3 4 #t)))                                               ;missingCards -> mazo de 3 elementos, maximo 4 cartas y orden aleatorio 
 (define cardMC2 (missingCards (cardsSet ListS 8 44 #t)))                                             ;missingCards -> mazo de 8 elementos, maximo 44 cartas y orden aleatorio 
 (define cardMC3 (missingCards (cardsSet ListS 3 -1 #t)))                                             ;missingCards -> mazo de 3 elementos y orden aleatorio (Esta seria nulo, ya que no faltan cartas)
 
@@ -52,14 +52,14 @@
 ;(display  CS->S1)
 (define CS->S2(CardsSet->String(cardsSet ListS 4 -1 #false)))
 ;(display  CS->S2)
-(define CS->S3(CardsSet->String(cardsSet ListS 3 4 #true)))
+(define CS->S3(CardsSet->String(cardsSet null 3 4 #true)))
 ;(display  CS->S3)
 
 ;------------------------------ TDA cardsSet - addCard ---------------------------------------------------------------------
-(define ADD1 (addCard (cardsSet ListS 3 4 #false) (list "B " "E " "G "))) ;adicion a un cardsSet
-(define ADD2 (addCard null (list "B " "E " "G ")))                        ;adicion a lista vacia
-(define ADD3 (addCard ADD2 (list "B " "E " "G ")))                        ;adicion a lista con el mismo elemento (no agrega nada)
-(define ADD4 (addCard ADD3 (list "A " "E " "D ")))                        ;adcion a lista con un elemento
+(define ADD1 (addCard (cardsSet ListS 3 4 #false) (list "B" "E" "G"))) ;adicion a un cardsSet
+(define ADD2 (addCard null (list "B" "E" "G")))                        ;adicion a lista vacia
+(define ADD3 (addCard ADD2 (list "B" "E" "G")))                        ;adicion a lista con el mismo elemento (no agrega nada)
+(define ADD4 (addCard ADD3 (list "A" "E" "D")))                        ;adcion a lista con un elemento
 
 ;---------------------------------------------------------------------------------------------------------------------------
 ;-------------------------------------TDA Game------------------------------------------------------------------------------
@@ -71,17 +71,29 @@
 (define game3 (game 5 mazo stackMode #t))
 
 ;----------------------------------TDA game - stackMode---------------------------------------------------------------------
-(define STM1(stackMode(cardsSet ListS 4 -1 #t)))
+(define STM1(stackMode(cardsSet ListS 4 -1 #t)))  ;Utilizando cardsSet
+(define STM2(stackMode mazo))                     ;Utilizando de ejemplo anterior
+(define STM3(stackMode(cardsSet ListS 5 10 #f)))  ;Limitando la cantidad de cartas
 
 ;------------------------------------TDA game - register--------------------------------------------------------------------
-(define mazo1 (cardsSet ListS 8 -1 #f))
-(define gameE1 (game 3 mazo1 stackMode #t))
-(define gameE2 (register "juanito" gameE1))
-(define gameE3 (register "carlitos" gameE2))
-(define gameE4 (register "manolito" gameE3))
+;definicion para poder usarlas en el ejemplo
+(define mazo1 (cardsSet ListS 3 -1 #f))
+(define gameE1 (game 3 mazo1 stackMode #t))  ;juego para 3 personas con mazo aleatorio
+
+;ejemplo del regiter
+(define gameE2 (register "juanito" gameE1))  ;jugador 1
+(define gameE3 (register "carlitos" gameE2)) ;jugador 2
+(define gameE4 (register "manolito" gameE3)) ;jugador 3
 
 ;-----------------------------------TDA game - whoseTurnIsIt?---------------------------------------------------------------
-(define WTII1(whoseTurnIsIt? gameE4)) ;no puede haber otro ejemplo, faltaria la definicion de play
+;definicion para ocuparlas en el ejemplo
+(define play_2(play gameE4 pass))     ;caso con el register anterior
+(define play_3(play play_2 (spotIt "D ")))
+
+;Ejemplo del whoseTurnIsIt?
+(define WTII1(whoseTurnIsIt? gameE4)) ;Caso de datos desde el register
+(define WTII2(whoseTurnIsIt? play_2)) ;Caso partida avanzada 
+(define WTII3(whoseTurnIsIt? play_3)) ;Caso partida avanzada 
 
 ;-------------------------------------TDA game - play-----------------------------------------------------------------------
 ;definicion base
@@ -93,10 +105,10 @@
 ;ejemplos de uso
 (define play1(play gameplay3 null))
 (define play2(play play1 pass))
-(define play3(play play2 (spotIt "D ")))
-(define play4(play play3 (spotIt "B ")))
-(define play5(play play4 (spotIt "C ")))
-(define play6(play play5 (spotIt "B ")))
+(define play3(play play2 (spotIt "D")))
+(define play4(play play3 (spotIt "B")))
+(define play5(play play4 (spotIt "C")))
+(define play6(play play5 (spotIt "B")))
 (define play7(play play6 finish))          ;aclarar que el 1 significa primero y asi sucesivamente, es decir gana el 1
 
 ;----------------------------------TDA game - status------------------------------------------------------------------------

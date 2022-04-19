@@ -12,7 +12,7 @@
 ;tda->player (nombre turno puntos)
 ;tda->game (player Cartas-en-Mesa Mazo)
 
-;Funcion player
+;Funcion Constructor
 ;Dominio: Entero
 ;Recorrido:  Lista
 ;Descripcion: definine la estructura para cada jugador
@@ -22,7 +22,7 @@
     [(= n 0) null]
     [else (cons (list n 0 0) (player (- n 1)))]))
 
-;Funcion game
+;Funcion Constructor
 ;Dominio: Entero X Lista X Funcion X Booleano
 ;Recorrido: Lista de Listas
 ;Descripcion: genera el juego con el numero de jugadores, el mazo nuevo, el modo y si se quiere azar o no.
@@ -40,7 +40,7 @@
 ;stackMod->(Cartas-en-Mesa Mazo)
 ;----------------------------------------------------------------------------------------------------------------------
 
-;Funcion stackMode
+;Funcion Constructor
 ;Dominio: Lista
 ;Recorrido: Listas
 ;Descripcion: genera el juego de stack mode, una lista con 2 cartas y el resto del mazo.
@@ -55,7 +55,7 @@
 ;------------------------------------TDA game - register---------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------
 
-;Funcion insertarRegister
+;Funcion Modificador
 ;Dominio: Lista X String
 ;Recorrido: Lista
 ;Descripcion: Agrega el nuevo nombre a la lista del game
@@ -67,7 +67,7 @@
     [(number? (car(car L))) (cons (list e 0 0) (cdr L))]
     [else (cons (car L) (insertarRegister (cdr L) e))]))
 
-;Funcion register
+;Funcion Modificador
 ;Dominio: String X Lista
 ;Recorrido: Lista de Listas
 ;Descripcion: agrega la lista con los nuevos nombres a el game
@@ -78,7 +78,7 @@
 ;----------------------------------------------------------------------------------------------------------------------
 ;------------------------------TDA game - whoseTurnIsIt?---------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------
-;Funcion turno?
+;Funcion Selector
 ;Dominio: Lista X Lista
 ;Recorrido: String
 ;Descripcion: dice de quien es el turno, bajo la logica si todos estan iguales el turno es para el primero
@@ -90,7 +90,7 @@
     [(equal? (car(cdr(car L))) (car(cdr(car(cdr L))))) (turno? (cdr L) L1)] ;caso cuando evalua igualdad
     [(> (car(cdr(car L)))  (car(cdr(car(cdr L))))) (car(car(cdr L)))])) ;caso cuando unos es mayor que el otro
 
-;Funcion whoseTurnIsIt?
+;Funcion Selector
 ;Dominio: Lista
 ;Recorrido: String
 ;Descripcion: Evalua la lista en el turno? y regresa un nombre
@@ -102,7 +102,7 @@
 ;----------------------------------TDA game - play---------------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------
 ;null------------------------------------------------------------------------------------------------------------------
-;Funcion nulo
+;Funcion Selector
 ;Dominio: Lista
 ;Recorrido: Lista
 ;Descripcion: caso cuando la action de play es null, y regresa el estado del game
@@ -110,7 +110,7 @@
 (define (nulo L)
   L)
 ;spotlt----------------------------------------------------------------------------------------------------------------
-;Funcion aumentTurno 
+;Funcion Modificador
 ;Dominio: Lista
 ;Recorrido: Lista
 ;Descripcion: en la lista de jugadores aumenta el turno en 1 para la persona que este de turno
@@ -120,7 +120,7 @@
     [(empty? L) null]
     [else (append(list (car L) (+ (car(cdr L)) 1)) (cdr(cdr L)))]))
 
-;Funcion aumentPunt
+;Funcion Modificador
 ;Dominio: Lista
 ;Recorrido: Lista
 ;Descripcion: en la lista de jugadores aumenta el puntaje en 1 para la persona que este de turno
@@ -130,7 +130,7 @@
     [(empty? L) null]
     [else (list (car L) (car(cdr L)) (+(car(cdr(cdr L)))1))]))
 
-;Funcion buscarSpotlt
+;Funcion Pertinencia 
 ;Dominio: Lista X String
 ;Recorrido: Booleano
 ;Descripcion: Comprueba si el string esta dentro de las cartas volteadas
@@ -141,7 +141,7 @@
     [(equal? (car L) n) #true]
     [else (buscarSpotlt (cdr L) n)]))
 
-;Funcion GanoPuntos
+;Funcion Modificador
 ;Dominio: Lista
 ;Recorrido: Lista (jugadores)
 ;Descripcion: Si se ganaron puntos agrega puntos y suma un turno, sino solo suma un turno
@@ -151,7 +151,7 @@
     [(equal? (car(car L))(turno? L L)) (cons (aumentPunt(aumentTurno (car L))) (cdr L))]
     [else (cons (car L) (GanoPuntos (cdr L)))]))
 
-;Funcion Spotlt2
+;Funcion Modificador
 ;Dominio: Lista X String
 ;Recorrido: Lista
 ;Descripcion: Comprueba si se ganaron puntos, sino pasa el turno
@@ -161,7 +161,7 @@
     [(and(buscarSpotlt (car(car(cdr L))) n) (buscarSpotlt (car(cdr(car(cdr L)))) n)) (GanoPuntos (car L))]
     [else (pass1 (car L))]))
 
-;Funcion SigTurn
+;Funcion Modificador
 ;Dominio: Lista
 ;Recorrido: Lista
 ;Descripcion: Elimina las cartas en juego, y agrega otras 2 cartas del mazo
@@ -169,7 +169,7 @@
 (define (SigTurn L)
   (list (list (encontrar L (length L)) (encontrar L (-(length L)1))) (eleminar (eleminar L (length L)) (-(length L)1))))
 
-;Funcion Spotlt3
+;Funcion Modificador
 ;Dominio: String X Lista
 ;Recorrido: Lista (game)
 ;Descripcion: Se ingresa el game y el elemento en comun, y se hace el proceso de SpotIt
@@ -177,7 +177,7 @@
 (define (Spotlt3 n L)
   (cons (Spotlt2  L n) (stackMode (car(cdr(cdr L))))))
 
-;Funcion spotIt
+;Funcion Selector
 ;Dominio: String
 ;Recorrido: String
 ;Descripcion: Regresa el String ingresado
@@ -186,7 +186,7 @@
   n)
 
 ;pass---------------------------------------------------------------------------------------------------------------------
-;Funcion pass1
+;Funcion Modificador
 ;Dominio: Lista
 ;Recorrido: Lista(game)
 ;Descripcion: aumenta en uno la cantidad de turnos del jugador actual
@@ -196,7 +196,7 @@
     [(equal? (car(car L))(turno? L L)) (cons (aumentTurno (car L)) (cdr L))]
     [else (cons (car L) (pass1 (cdr L)))]))
 
-;Funcion pass
+;Funcion Modificador
 ;Dominio: Lista
 ;Recorrido: Lista (game)
 ;Descripcion: junta el aumento del turno con el resto del game
@@ -205,7 +205,7 @@
   (cons (pass1 (car L)) (cdr L)))
 
 ;finish-------------------------------------------------------------------------------------------------------------------
-;Funcion encontFinish
+;Funcion Modificador
 ;Dominio: Lista X String
 ;Recorrido: Lista 
 ;Descripcion: encuentra y elimina el elemento de la lista
@@ -216,7 +216,7 @@
     [(equal? (car(car L)) e) (cdr L)]
     [else (cons (car L) (encontFinish (cdr L) e))]))
 
-;Funcion reordenar
+;Funcion Selector
 ;Dominio: Lista X Entero X Entero
 ;Recorrido: "String"
 ;Descripcion: Regresa el jugador con la mayor puntuación
@@ -227,7 +227,7 @@
     [(>= (car(cdr(cdr(car L)))) e) (reordenar (cdr L) (car(cdr(cdr(car L)))) (car(car L)))]
     [else (reordenar (cdr L) e a)]))
 
-;Funcion finish1
+;Funcion Modificador
 ;Dominio: Lista X Entero
 ;Recorrido: Lista
 ;Descripcion: Regresa a los jugadores por odern de puntaje 
@@ -237,7 +237,7 @@
     [(empty? L) null]
     [else (cons (list (reordenar L 0 0) i) (finish1 (encontFinish  L (reordenar L 0 0)) (+ i 1)))]))
 
-;Funcion finish
+;Funcion Modificador 
 ;Dominio: Lista 
 ;Recorrido: Lista
 ;Descripcion: regresa la tabla de posiciones de los jugadores
@@ -245,7 +245,7 @@
 (define (finish L)             ;aclarar que el 1 significa primero y asi sucesivamente, es decir gana el 1
   (finish1 (car L) 1))
 ;Play---------------------------------------------------------------------------------------------------------------------
-;Funcion Play 
+;Funcion Modificador
 ;Dominio: Lista X Funcion (o null)
 ;Recorrido: Lista (Game)
 ;Descripcion: funcion de jugar, realiza la accion segun la funcion establecida
@@ -259,7 +259,7 @@
 ;----------------------------------------------------------------------------------------------------------------------
 ;----------------------------------TDA game - status-------------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------
-;Funcion status
+;Funcion Selector
 ;Dominio: Lista
 ;Recorrido: Lista
 ;Descripcion: Regresa el estado actual del juego
@@ -270,7 +270,7 @@
 ;----------------------------------------------------------------------------------------------------------------------
 ;---------------------------------TDA game - score---------------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------
-;Funcion score1
+;Funcion Selector
 ;Dominio: Lista X String
 ;Recorrido: Entero
 ;Descripcion: Regresa el puntaje de un jugador seleccionado
@@ -281,7 +281,7 @@
     [(equal? (car(car L)) name) (car(cdr(cdr(car L))))]
     [else (score1 (cdr L) name)]))
 
-;Funcion score
+;Funcion Selector
 ;Dominio: Lista X String
 ;Recorrido: Entero
 ;Descripcion: Llama a la funcion anterior para encontrar el puntaje de cierto jugador

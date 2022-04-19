@@ -2,11 +2,9 @@
 ;--------Para Exportar Funciones-------------------------------------------------------------------------------------------------------------------------------
 (provide (all-defined-out))
 ;--------Listas Propuestas a usar (max cantidad de elementos 57)-----------------------------------------------------------------------------------------------
-(define ListS(list "A " "B " "C " "D " "E " "F " "G " "H " "I " "J " "K " "L " "M " "N " "Ñ " "O " "P " "Q " "R " "S " "T " "U " "V " "W " "X " "Y " "Z "
-                   "aA " "bB " "cC " "dD " "eE " "fF " "gG " "hH " "iI " "jJ " "kK " "lL " "mM " "nN " "ñÑ " "oO " "pP " "qQ " "rR " "sS " "tT " "uU " "vV " "wW " "xX " "yY " "zZ "
-                   "aAa " "bBb " "cCc "))
-(define ListN(list "1 " "2 " "3 " "4 " "5 " "6 " "7 " "8 " "9 " "10 " "11 " "12 " "13 " "14 " "15 " "16 " "17 " "18 " "19 " "20 " "21 " "22 " "23 " "24 " "25 " "26 " "27 " "28 " "29 " "30 "
-                   "31 " "32 " "33 " "34 " "35 " "36 " "37 " "38 " "39 " "40 " "41 " "42 " "43 " "44 " "45 " "46 " "47 " "48 " "49 " "50 " "51 " "52 " "53 " "54 " "55 " "56 " "57 "))
+(define ListS(list "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "Ñ" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"
+                   "aA" "bB" "cC" "dD" "eE" "fF" "gG" "hH" "iI" "jJ" "kK" "lL" "mM" "nN" "ñÑ" "oO" "pP" "qQ" "rR" "sS" "tT" "uU" "vV" "wW " "xX" "yY" "zZ"
+                   "aAa" "bBb" "cCc"))
 ;-------------------------------------------REPRESENTACION-----------------------------------------------------------------------------------------------------
 ;TDA correspondiente a la creacion de un set de cartas
 
@@ -15,7 +13,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;----------------------------------------Generacion de 1 Carta-------------------------------------------------------------------------------------------------
-;Funcion C1
+;Funcion Constructor
 ;Dominio: entero X entero
 ;Recorrido: List
 ;Descripcion: recibe un numero y una constante = 1, y se usa para generar las n primeras cartas
@@ -26,7 +24,7 @@
     [else null]))                        ;caso fin
 
 ;----------------------------------------Generacion de N cartas------------------------------------------------------------------------------------------------
-;Funcion C2
+;Funcion Constructor
 ;Dominio: Entero X Entero X Entero
 ;Recorrido: Lista
 ;Descripcion: recibe un numero y 2 constates = 1, y genera una carta sin el primer elemento
@@ -36,7 +34,7 @@
     [(<= k n) (cons (+(* n j)(+ k 1))(C2 n j (+ k 1)))]   ;genera un listado con recursion
     [else null]))
 
-;Funcion C3
+;Funcion Constructor
 ;Dominio:  Entero X Entero X Entero
 ;Recorrido: Lista de Listas
 ;Descripcion: recibe un numero n y 2 constantes = 1, y genera n cartas.
@@ -47,7 +45,7 @@
     [else null]))
 
 ;---------------------------------------Generacion de las N*N Cartas-------------------------------------------------------------
-;Funcion C4
+;Funcion Constructor
 ;Dominio: Entero X Entero X Entero X Entero
 ;Recorrido: Lista
 ;Descripcion: recibe un numero y 3 constates = 1, y genera una carta sin el primer elemento
@@ -57,7 +55,7 @@
     [(<= k n)(cons (+(+ (+ (modulo(-(+(*(- i 1)(- k 1))j)1)n) (* n(- k 1))) 2) n) (C4 n i j (+ k 1)))]
     [else null]))
 
-;Funcion C5
+;Funcion Constructor
 ;Dominio: Entero X Entero X Entero X Entero
 ;Recorrido: Lista de listas
 ;Descripcion: recibe un numero y 3 constates = 1, y genera una parte del set de cartas de tamaño n
@@ -67,7 +65,7 @@
     [(<= j n)(cons(cons (+ i 1)(C4 n i j k))(C5 n i (+ j 1) k))]
     [else null]))
 
-;Funcion C6
+;Funcion Constructor
 ;Dominio: Entero X Entero X Entero X Entero
 ;Recorrido: Lista de Listas
 ;Descripcion: recibe un numero y 3 constates = 1, y genera un mazo de cartas completo
@@ -78,7 +76,7 @@
     [else null]))
 
 ;--------------------------------Creacion Mazo con Maximo de cartas----------------------------------------------------
-;Funcion Cards
+;Funcion Constructor
 ;Dominio: Entero
 ;Recorrido: Lista de Listas
 ;Descripcion: a partir de un N que representa la cantidad de elementos por cartas, genera un mazo completo
@@ -87,7 +85,7 @@
 (define Cards(lambda(n)
           (append(cons(C1 n 1)(C3 (- n 1) 1 1))(C6 (- n 1) 1 1 1))))
 
-;Funcion cardSet2 (recortar segun max)
+;Funcion Modificador
 ;Dominio: Lista X Entero X Entero
 ;Recorrido: Lista de Listas (o si Max = 1, Lista)
 ;Descripcion: recorta la lista en en la posicion que se desee
@@ -99,7 +97,7 @@
                    [else null])))
 
 ;-----------------------------Creacion de Mazo con Simbolos---------------------------------------------------------------------------
-;Funcion recorrer
+;Funcion Selector
 ;Dominio: Lista X Entero X Entero
 ;Recorrido: String
 ;Descripcion: recorre la lista de simbolos, y retorna el elemento de la posicion indicada
@@ -110,7 +108,7 @@
     [( = acum (- n 1)) (car Ls)]
     [else (recorrer (cdr Ls) n (+ acum 1))]))
 
-;Funcion igualar
+;Funcion Modificador
 ;Dominio: Lista X Lista
 ;Recorrido: Lista
 ;Descripcion: a base de una carta, crea una carta de la lista de simbolos
@@ -120,7 +118,7 @@
     [(empty? Lc) null]
     [else (cons (recorrer Ls (car Lc) 0) (igualar Ls (cdr Lc)))])) ;agrega simbolo x simbolos hasta llenar la carta
 
-;Funcion Symbo
+;Funcion Modificador
 ;Dominio: Lista X Lista
 ;Recorrido: Lista de Listas
 ;Descripcion: genera una lista de cartas con simbolos
@@ -131,7 +129,7 @@
     [else (cons(igualar Ls (car Lc))(Symbo Ls (cdr Lc)))]))  ;agrega carta por carta hasta llenar el mazo
 
 ;...................Mazos con la inclusion de listas................................................................................
-;Funcion cardsSet3
+;Funcion Constructor
 ;Dominio: Lista X Entero X Entero
 ;Recorrido: Lista de Listas 
 ;Descripcion: bajo los parametros de entrada genera un set de cartas
@@ -140,7 +138,7 @@
                   (define L1 (Cards Num))
                   (cardSet2 L1 Num Max)))
 
-;Funcion cardsSet4 
+;Funcion Constructor
 ;Dominio: Lista X Entero X Entero
 ;Recorrido: Lista de Listas 
 ;Descripcion: remplaza la lista de números por la lista de string ingresada
@@ -151,9 +149,9 @@
                      [else (Symbo L (cardsSet3 L Num Max))])))         ;(cardsSet (list "a" "b" "c" "d" "e" "f" "g") 3 -1)
 
 ;---------------------------------------RANDOM--------------------------------------------------------------------------------
-;Funcion encotrar 
+;Funcion Selector
 ;Dominio: Lista X Entero
-;Recorrido: 
+;Recorrido: Lista (carta)
 ;Descripcion: recorre la lista hasta encontrar el elemento por su posicion y lo devuelve
 ;Tipo: Cola
 (define (encontrar L n)
@@ -162,7 +160,7 @@
     [(equal? n 1)(car L)]
     [else (encontrar (cdr L) (- n 1))]))
 
-;Funcion eleminar
+;Funcion Modificador
 ;Dominio: Lista X Entero
 ;Recorrido: Lista
 ;Descripcion: Recorre la lista hasta encontrar un elemento por su posicion y lo borra
@@ -173,7 +171,7 @@
     [(equal? n 1)(cdr L)]
     [else (cons (car L) (eleminar (cdr L) (- n 1)))]))
 
-;Funcion randomFn
+;Funcion Modificador
 ;Dominio: Lista X Entero
 ;Recorrido: Lista 
 ;Descripcion: desordena elementos de una lista
@@ -185,7 +183,7 @@
 
 ;cardsSet -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-;Funcion cardsSet
+;Funcion Constructor
 ;Dominio: Lista X Entero X Entero X Booleano
 ;Recorrido: Lista de Listas
 ;Descripcion: genera el conjunto de cartas completo con una lista de elementos, cantidad de elementos, numero max de cartas y si se quiere al azar o no
@@ -198,7 +196,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;--------------------------------------- TDA cardsSet - Dobble?------------------------------------------------------------------------------------------------
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Funcion buscar
+;Funcion Selector
 ;Dominio: Lista X Lista X Lista X Entero
 ;Recorrido: Entero
 ;Descripcion entrega el numero de elementos repetidos que hay entre ambas listas.
@@ -210,7 +208,7 @@
     [(equal? (car L1) (car L2)) (buscar(cdr L1) L2 L12 (+ acum 1))]
     [else (buscar(cdr L1) L2 L12 acum)]))
 
-;Funcion buscar3
+;Funcion Pertinencia
 ;Dominio: Lista X Lista X Lista
 ;Recorrido: Booleano
 ;Descripcion recorre ambas listas y las envia a buscar. Solo 1 elemento en comun, de esta forma ve que el n-1 sea primo o un numero elevado a un primo.
@@ -223,7 +221,7 @@
     [else #false]))
 
 
-;Funcion buscar2
+;Funcion Pertinencia
 ;Dominio: Lista X Lista
 ;Recorrido: Booleano
 ;Descripcion: no elentos repetido en una misma carta.
@@ -234,7 +232,7 @@
     [(= (buscar (car L1) (car L2) (car L1) 0) (length (car L1))) (buscar2 (cdr L1) (cdr L2))]
     [else #false]))
 
-;Funcion buscar3
+;Funcion Pertinencia
 ;Dominio: Listas
 ;Recorrido: Booleano
 ;Descripcion: misma cantidad de elementos.
@@ -246,7 +244,7 @@
     [(= (length (car L)) (length (car(cdr L)))) (buscar4 (cdr L))]
     [else #false]))
 
-;Funcion Dobble?
+;Funcion Pertinencia
 ;Dominio: Lista
 ;Recorrido: Booleano
 ;Descripcion: Recopilacion de anteriores y define si es un conjunto valido o no
@@ -263,7 +261,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;--------------------------------------------TDA cardsSet - numCards ------------------------------------------------------------------------------------------
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Funcion loopNc
+;Funcion "Otra"
 ;Dominio: Lista X Entero
 ;Recorrido: Entero
 ;Descripcion: Cuenta la cantidad de elementos en una lista (preferi generar mi popio length)
@@ -273,7 +271,7 @@
     [(empty? L) i]
     [else (loopNc (cdr L)(+ i 1))]))
 
-;Funcion numCards
+;Funcion "Otra"
 ;Dominio: Lista
 ;Recorrido: Entero
 ;Descripcion: Regresa la cantidad de elementos en una lista
@@ -284,7 +282,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;---------------------------------------------TDA cardsSet - nthCard ------------------------------------------------------------------------------------------
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Funcion loopNth
+;Funcion Selector
 ;Dominio: Lista X Entero X Entero
 ;Recorrido: Elemento (o una Lista)
 ;Descripcion: regresa el elemento que se encuentre en sierta posición
@@ -295,7 +293,7 @@
     [(= (- j 1) i) (car L)]                ;Devuelve la carta solicitada
     [else (loopNth (rest L) j (+ i 1))]))  ;Cumple el loop sumando 1 a i
 
-;Funcion nthCard
+;Funcion Selector
 ;Dominio: Lista X Entero 
 ;Recorrido: Lista
 ;Descripcion: regresa la carta que se encuentre en la posicion j
@@ -306,7 +304,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------ TDA cardsSet - findTotalCards--------------------------------------------------------------------------------------
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Funcion findTotalCards
+;Funcion "Otra"
 ;Dominio: Lista
 ;Recorrido: Entero
 ;Descripcion: A partir de una carta de muestra, determina la cantidad total de cartas que se deben producir para construir un conjunto válido.
@@ -317,7 +315,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------- TDA cardsSet - requiredElements ------------------------------------------------------------------------------------
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Funcion requiredElements
+;Funcion "Otra"
 ;Dominio: Lista
 ;Recorrido: Entero
 ;Descripcion: A partir de una carta de muestra, determina la cantidad total de elementos para un mazo 
@@ -328,7 +326,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;--------------------------------------------- TDA cardsSet - missingCards  -----------------------------------------------------------------------------------
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Funcion RecoMiss
+;Funcion "Otra"
 ;Dominio: Lista X Lista X Lista
 ;Recorrido: Listas de listas
 ;Descripcion: regresa la cantidad de cartas para que el conjunto sea valido
@@ -340,20 +338,40 @@
     [(equal? (car L1)(car L2))(RecoMiss (cdr L1) L22 L22)]          ;cuando el elemento si esta en la lista se descarta y sigue
     [else (RecoMiss L1 (cdr L2) L22)]))                             ;caso de avance al siguiente elemento de la lista
 
-;Funcion missingCards L
+;Funcion "Otra"
 ;Dominio: Lista (cartas)
 ;Recorrido: Lista de Listas
 ;Descripcion: a base de un conjunto de cartas, te entrega el resto de estas 
 ;Tipo: Declarativa
 (define (missingCards L)
   (cond
-    [(>= (buscar (car(cardsSet ListN (numCards (car L)) -1 #f)) (car L) (car(cardsSet ListN (numCards (car L)) -1 #f)) 0) 1) (RecoMiss(cardsSet ListN (numCards (car L)) -1 #f) L L)]
+    [(>= (buscar (car(cardsSet null (numCards (car L)) -1 #f)) (car L) (car(cardsSet null (numCards (car L)) -1 #f)) 0) 1) (RecoMiss(cardsSet null (numCards (car L)) -1 #f) L L)]
     [else (RecoMiss(cardsSet ListS (numCards (car L)) -1 #f) L L)]))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------- TDA cardsSet - CardsSet->String  -----------------------------------------------------------------------------
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Funcion CardsSet->String2
+;Funcion Modificador
+;Dominio: Lista 
+;Recorrido: Lista
+;Descripcion: Agrega espacios entre strings
+;Tipo: Natural
+(define (espacio L)
+  (cond
+    [(empty? L) null]
+    [else (cons (apply string-append (list (car L) " ")) (espacio (cdr L)))]))
+
+;Funcion Modificador
+;Dominio: Lista 
+;Recorrido: Lista
+;Descripcion: Transforma cada carta de numeros en un string
+;Tipo: Natural
+(define (CardsSet4->String L)
+  (cond
+    [(empty? L) null]
+    [(number? (car(car L))) (cons (espacio(map number->string (car L))) (CardsSet4->String (cdr L)))]))
+
+;Funcion Modificador
 ;Dominio: Lista 
 ;Recorrido: Lista
 ;Descripcion: transforma cada carta en un string
@@ -361,9 +379,9 @@
 (define (CardsSet->String2 L)
   (cond
     [(empty? L) null]
-    [else (cons (apply string-append (car L))(CardsSet->String2 (cdr L)))]))
+    [else (cons (apply string-append (espacio(car L)))(CardsSet->String2 (cdr L)))]))
 
-;Funcion putNCard
+;Funcion Modificador
 ;Dominio: Lista X Entero
 ;Recorrido: Lista
 ;Descripcion: agrega elementos para el aspecto de cada carta
@@ -373,18 +391,20 @@
     [(empty? L) null]
     [else (cons(append (list "Card " (number->string  i) ": " (car L)) (list "\n")) (putNCard (cdr L) (+ i 1)))]))
 
-;Funcion CardsSet->String
+;Funcion "Otra"
 ;Dominio: Lista
 ;Recorrido: String
 ;Descripcion: transforma la Lista de Strings genera anteriormente en un String
 ;Tipo: Declarativa
 (define (CardsSet->String L)
-  (apply string-append(CardsSet->String2 (putNCard (CardsSet->String2 L) 1))))
+  (cond
+    [(number? (car(car L)))(CardsSet->String(CardsSet4->String L))]
+    [else (apply string-append(CardsSet->String2 (putNCard (CardsSet->String2 L) 1)))]))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;---------------------------------------------------- TDA cardsSet - addCard ----------------------------------------------------------------------------------
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Funcion addCard2
+;Funcion Modificador
 ;Dominio: Lista X Lista
 ;Recorrido: Lista de Listas
 ;Descripcion: agrega una carta a la lista
@@ -394,7 +414,7 @@
     [(empty? L) (cons c null)]
     [else (cons (car L) (addCard2 (cdr L) c))]))
 
-;Funcion addCard
+;Funcion Modificador 
 ;Dominio: Lista X Lista
 ;Recorrido: Lista de Listas
 ;Descripcion: Comprueba si el set con la carta nueva es valido, si lo es la agrega y si no lo es no la agrega
